@@ -77,7 +77,7 @@ def get_rgb(subdir):
   """
 
   fn = os.path.join(subdir, 'rgb.mp4')
-  reader = imageio.get_reader(fn, pixelformat='yuvj444p')
+  reader = imageio.get_reader(fn)#, pixelformat='yuvj444p')
   list_im = []
   # start = time.time()
   for i, im in enumerate(reader):

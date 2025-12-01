@@ -111,10 +111,12 @@ def get_dataloaders(dataset_name, dataset_dir, kwargs_loader, split, type,
 
 def main(args):
   # kwargs
-  device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+  device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
+  
   kwargs_loader = {}
-  if device.type == 'cuda':
+  if device.type in ['cuda', 'mps']:
     kwargs_loader.update({'num_workers': args.workers, 'pin_memory': True})
+  print(f"Using device: {device}")
 
   # datasets and loaders
   loader, fn = get_dataloaders(args.dataset_name,
@@ -128,13 +130,14 @@ def main(args):
   model = DeRendering(num_objects=loader.dataset.num_objects).to(device)
 
   # load the derendering module
-  pretrained_dict = torch.load(args.derendering_ckpt)
+  # Force load to CPU first to handle the CUDA mismatch
+  pretrained_dict = torch.load(args.derendering_ckpt, map_location=torch.device('cpu'))
   pretrained_dict = {k: v for k, v in pretrained_dict.items()}
   model_dict = model.state_dict()
   pretrained_dict = {k: v for k, v in pretrained_dict.items() if
                      k in model_dict}
   model.load_state_dict(pretrained_dict, strict=False)
-
+  model.to(device)
   # extract
   dict_id2object_properties = extract_object_visual_properties(model, device, loader, args.sanity_check)
 

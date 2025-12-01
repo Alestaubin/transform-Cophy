@@ -64,6 +64,7 @@ class Balls_CF(data.Dataset):
 
     if self.use_preextracted_object_properties:
       fn = os.path.join(self.preextracted_object_properties_dir, f"balls_{self.num_balls}_{self.split}_extracted_prop.pickle")
+      print(f"Loading pre-extracted object properties from: {fn}")
       with open(fn, 'rb') as f:
         self.dict_id2object_properties = pickle.load(f)
 

@@ -7,16 +7,16 @@
 PYTHONPATH=`pwd`
 COPHY=$1
 DERENDERING_DIR=$2
-OUT_DIR=$3
+OUT_DIR=$3l
 
 # BallsCF
 for k in 2 3 4 5 6
 do
   for s in 'val' 'train' 'test'
   do
-    python derendering/extract_object_visual_properties.py \
+    python -m derendering.extract_object_visual_properties \
     --dataset_dir $COPHY/ballsCF \
-    --out_dir $OUT_DIR/ballCF \
+    --out_dir ballCF \
     --dataset_name balls \
     --derendering_ckpt $DERENDERING_DIR/ballsCF/model_state_dict.pt \
     --workers 8 \

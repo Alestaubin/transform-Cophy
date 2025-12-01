@@ -1,0 +1,11 @@
+Acc_presence=69.55 MSE_3d=3.950793
+Acc_presence=69.55 MSE_3d=3.950793
+Acc_presence=69.56 MSE_3d=2.622049
+Acc_presence=69.60 MSE_3d=2.703599
+Acc_presence=69.24 MSE_3d=2.634996
+Acc_presence=69.49 MSE_3d=2.475738
+Acc_presence=69.10 MSE_3d=2.472200
+Acc_presence=69.48 MSE_3d=2.227099
+Acc_presence=69.26 MSE_3d=2.059618
+Acc_presence=69.10 MSE_3d=2.077950
+Acc_presence=69.55 MSE_3d=3.950793
