@@ -2,6 +2,7 @@
 
 This repository contains the modified codebase from the paper ["CoPhy: Counterfactual Learning of Physical Dynamics", F. Baradel, N. Neverova, J. Mille, G. Mori, C. Wolf, ICLR'2020](https://arxiv.org/abs/1909.12000). 
 
-Links: [Project page](https://alestaubin.github.io/publication/202512-CPSC532Y) 
+This project involves replacing the outdated RNN architecture with a transformer encoder for the latent confounders encoding step.
 
+Links: [Project page](https://alestaubin.github.io/publication/202512-CPSC532Y) 
 
