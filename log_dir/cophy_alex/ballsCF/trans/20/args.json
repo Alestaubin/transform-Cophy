@@ -1,0 +1,21 @@
+{
+    "dataset_dir": "/Users/alexst-aubin/coding_projects/UBC/Fall2025/cophy_224/ballsCF",
+    "num_objects": 3,
+    "type": "normal",
+    "derendering_ckpt": "./ckpts/derendering/ballsCF/model_state_dict.pt",
+    "log_dir": "./log_dir/cophy_alex/ballsCF/trans/20",
+    "dataset_name": "balls",
+    "model": "cophynet",
+    "batch_size": 32,
+    "workers": 4,
+    "epochs": 10,
+    "lr": 0.001,
+    "evaluate": false,
+    "train_from_rgb": false,
+    "pretrained_ckpt": "/usr/local/google/home/fbaradel/Documents/log_dir/blocktowerCF/model_state_dict.pt",
+    "preextracted_obj_vis_prop_dir": "./extracted_obj_visu_prop/ballsCF",
+    "encoder_type": "transformer",
+    "seed": 1,
+    "w_stab": 1.0,
+    "w_pose": 2.0
+}

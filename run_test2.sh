@@ -16,7 +16,7 @@ echo "Running Experiment 1..."
 python -m cf_learning.main \
         --dataset_dir "$COPHY/ballsCF" \
         --derendering_ckpt "$DERENDERING_DIR/ballsCF/model_state_dict.pt" \
-        --log_dir "$LOG_DIR/ballsCF/rnn/10" \
+        --log_dir "$LOG_DIR/ballsCF/rnn/20" \
         --preextracted_obj_vis_prop_dir "$PREXTRACTED_OBJ/ballsCF" \
         --dataset_name balls \
         --model cophynet --num_objects 3 --type normal \
@@ -25,7 +25,7 @@ python -m cf_learning.main \
 python -m cf_learning.main \
         --dataset_dir "$COPHY/ballsCF" \
         --derendering_ckpt "$DERENDERING_DIR/ballsCF/model_state_dict.pt" \
-        --log_dir "$LOG_DIR/ballsCF/trans/10" \
+        --log_dir "$LOG_DIR/ballsCF/trans/20" \
         --preextracted_obj_vis_prop_dir "$PREXTRACTED_OBJ/ballsCF" \
         --dataset_name balls \
         --model cophynet --num_objects 3 --type normal \
@@ -36,7 +36,7 @@ echo "Running Experiment 2..."
 python -m cf_learning.main \
         --dataset_dir "$COPHY/ballsCF" \
         --derendering_ckpt "$DERENDERING_DIR/ballsCF/model_state_dict.pt" \
-        --log_dir "$LOG_DIR/ballsCF/rnn/11" \
+        --log_dir "$LOG_DIR/ballsCF/rnn/21" \
         --preextracted_obj_vis_prop_dir "$PREXTRACTED_OBJ/ballsCF" \
         --dataset_name balls \
         --model cophynet --num_objects 3 --type normal \
@@ -45,7 +45,7 @@ python -m cf_learning.main \
 python -m cf_learning.main \
         --dataset_dir "$COPHY/ballsCF" \
         --derendering_ckpt "$DERENDERING_DIR/ballsCF/model_state_dict.pt" \
-        --log_dir "$LOG_DIR/ballsCF/trans/11" \
+        --log_dir "$LOG_DIR/ballsCF/trans/21" \
         --preextracted_obj_vis_prop_dir "$PREXTRACTED_OBJ/ballsCF" \
         --dataset_name balls \
         --model cophynet --num_objects 3 --type normal \
@@ -56,7 +56,7 @@ echo "Running Experiment 3..."
 python -m cf_learning.main \
         --dataset_dir "$COPHY/ballsCF" \
         --derendering_ckpt "$DERENDERING_DIR/ballsCF/model_state_dict.pt" \
-        --log_dir "$LOG_DIR/ballsCF/rnn/12" \
+        --log_dir "$LOG_DIR/ballsCF/rnn/22" \
         --preextracted_obj_vis_prop_dir "$PREXTRACTED_OBJ/ballsCF" \
         --dataset_name balls \
         --model cophynet --num_objects 3 --type normal \
@@ -65,7 +65,7 @@ python -m cf_learning.main \
 python -m cf_learning.main \
         --dataset_dir "$COPHY/ballsCF" \
         --derendering_ckpt "$DERENDERING_DIR/ballsCF/model_state_dict.pt" \
-        --log_dir "$LOG_DIR/ballsCF/trans/12" \
+        --log_dir "$LOG_DIR/ballsCF/trans/22" \
         --preextracted_obj_vis_prop_dir "$PREXTRACTED_OBJ/ballsCF" \
         --dataset_name balls \
         --model cophynet --num_objects 3 --type normal \
@@ -76,7 +76,7 @@ echo "Running Experiment 4..."
 python -m cf_learning.main \
         --dataset_dir "$COPHY/ballsCF" \
         --derendering_ckpt "$DERENDERING_DIR/ballsCF/model_state_dict.pt" \
-        --log_dir "$LOG_DIR/ballsCF/rnn/13" \
+        --log_dir "$LOG_DIR/ballsCF/rnn/23" \
         --preextracted_obj_vis_prop_dir "$PREXTRACTED_OBJ/ballsCF" \
         --dataset_name balls \
         --model cophynet --num_objects 3 --type normal \
@@ -86,10 +86,10 @@ python -m cf_learning.main \
 python -m cf_learning.main \
         --dataset_dir "$COPHY/ballsCF" \
         --derendering_ckpt "$DERENDERING_DIR/ballsCF/model_state_dict.pt" \
-        --log_dir "$LOG_DIR/ballsCF/trans/13" \
+        --log_dir "$LOG_DIR/ballsCF/trans/24" \
         --preextracted_obj_vis_prop_dir "$PREXTRACTED_OBJ/ballsCF" \
         --dataset_name balls \
         --model cophynet --num_objects 3 --type normal \
-        --batch_size 32 --workers 4 --epochs 10 --seed 4 --lr 1e-3 --encoder_type transformer \
+        --batch_size 32 --workers 4 --epochs 10 --seed 66 --lr 1e-3 --encoder_type transformer \
         --w_stab 1.0 --w_pose 2.0
 

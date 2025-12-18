@@ -25,6 +25,7 @@ from random import choice
 import torch.nn.functional as F
 import time
 from dataloaders.utils import *
+from torch.optim.lr_scheduler import LambdaLR
 
 def set_seed(seed):
     """ set the random seed for reproducibility """
@@ -33,6 +34,13 @@ def set_seed(seed):
     torch.manual_seed(seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(seed)
+
+def get_linear_schedule_with_warmup(optimizer, num_warmup_steps, num_training_steps):
+    def lr_lambda(current_step):
+        if current_step < num_warmup_steps:
+            return float(current_step) / float(max(1, num_warmup_steps))
+        return max(0.0, float(num_training_steps - current_step) / float(max(1, num_training_steps - num_warmup_steps)))
+    return LambdaLR(optimizer, lr_lambda)
         
 def get_losses(pred_pose_d, pred_stab_d, pred_presence_cd,
                gt_pose_d, gt_stab_d, gt_presence_cd, loss_func="mse",
@@ -47,7 +55,7 @@ def get_losses(pred_pose_d, pred_stab_d, pred_presence_cd,
     if loss_3d_denom.item() > 1e-5:
         if loss_func == "mse":
             loss_3d = torch.sum(((pred_pose_d - gt_pose_d) ** 2).mean(-1) * binary) / (torch.sum(binary))  # (B,K)
-        elif loss_func == "huber":        
+        elif loss_func == "huber":
             # beta=1.0 means it behaves like MSE for errors < 1, and L1 for errors > 1
             raw_loss = F.smooth_l1_loss(pred_pose_d, gt_pose_d, reduction='none', beta=1.0)
             
@@ -71,7 +79,7 @@ def get_acc_stab(pred, gt):
     return acc
 
 
-def train_one_epoch(model, device, loader, optimizer,
+def train_one_epoch(model, device, loader, optimizer, scheduler,
                     log_file,
                     print_freq=10, D=3,
                     is_rgb=False, 
@@ -121,9 +129,8 @@ def train_one_epoch(model, device, loader, optimizer,
         # backprop
         optimizer.zero_grad()
         loss.backward()
-        # torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
-        # print the loss norm 
         optimizer.step()
+        scheduler.step()
 
         end = time.time()
 
@@ -383,8 +390,12 @@ def main(args):
         model.load_state_dict(pretrained_dict, strict=False)
         model.to(device)
 
-        optimizer = optim.Adam(model.parameters(), lr=args.lr)
-
+        optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
+        # Warmup for the first 10% of training or first epoch
+        total_steps = len(train_loader) * args.epochs
+        warmup_steps = int(0.1 * total_steps) 
+        # scheduler = get_linear_schedule_with_warmup(optimizer, warmup_steps, total_steps)
+        scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=len(train_loader), num_training_steps=total_steps)
         # training
         os.makedirs(args.log_dir, exist_ok=True)
         log_file_val = os.path.join(args.log_dir, 'val.txt')
@@ -395,7 +406,7 @@ def main(args):
             start_time = time.time()
             list_acc_stab, list_mse_3d, list_total_loss, \
                 list_loss_stab, list_loss_3d = train_one_epoch(model, device, train_loader, 
-                                                               optimizer, log_file_train, D=D, 
+                                                               optimizer=optimizer, scheduler=scheduler, log_file=log_file_train, D=D, 
                                                                w_stab=args.w_stab, w_pose=args.w_pose)
             end_time = time.time()
             epoch_time = end_time - start_time
@@ -514,6 +525,9 @@ if __name__ == "__main__":
                         default=1.,
                         type=float,
                         help='3D pose weight.')
+    parser.add_argument('--weight_decay',
+                        default=0.,
+                        type=float,)
     args = parser.parse_args()
 
     main(args)

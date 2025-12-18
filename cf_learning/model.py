@@ -71,6 +71,13 @@ class PerObjectTemporalEncoder(nn.Module):
             nn.GELU(),
             nn.Linear(H, H)
         )
+        self._init_weights()
+    
+    def _init_weights(self):
+        print("Initializing weights...")
+        for p in self.parameters():
+            if p.dim() > 1:
+                nn.init.xavier_uniform_(p)
 
     def forward(self, gcn_outputs, valid_mask=None):
         """
@@ -112,14 +119,15 @@ class PerObjectTemporalEncoder(nn.Module):
 
         # Build src_key_padding_mask if valid_mask is provided.
         # Transformer expects src_key_padding_mask shape (batch, seq) with True for positions that should be masked (i.e., PADDING)
-        if valid_mask is not None:
-            # valid_mask expected shape (B, K, T) (True = valid)
-            vm = valid_mask.view(B * K, T)                 # (B*K, T)
-            # we prepended CLS at position 0, which should NOT be masked, so pad a False
-            cls_pad = torch.zeros(B * K, 1, dtype=torch.bool, device=vm.device)
-            padding_mask = torch.cat([cls_pad, ~vm], dim=1)  # True where padding (including for time)
-        else:
-            padding_mask = None
+        # if valid_mask is not None:
+        #     # valid_mask expected shape (B, K, T) (True = valid)
+        #     vm = valid_mask.view(B * K, T)                 # (B*K, T)
+        #     # we prepended CLS at position 0, which should NOT be masked, so pad a False
+        #     cls_pad = torch.zeros(B * K, 1, dtype=torch.bool, device=vm.device)
+        #     padding_mask = torch.cat([cls_pad, ~vm], dim=1)  # True where padding (including for time)
+        # else:
+            
+        padding_mask = None
 
         # Run transformer: input shape (batch, seq, d_model)
         # Note: src_key_padding_mask True values are positions that will be ignored.
